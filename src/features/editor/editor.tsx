@@ -13,7 +13,6 @@ import {
 } from "@/components/ui/resizable";
 import { ImperativePanelHandle } from "react-resizable-panels";
 import { getCompactFontData, loadFonts } from "./utils/fonts";
-import { SECONDARY_FONT, SECONDARY_FONT_URL } from "./constants/constants";
 import MenuList from "./menu-list";
 import { MenuItem } from "./menu-item";
 import { ControlItem } from "./control-item";
@@ -30,7 +29,6 @@ const stateManager = new StateManager({
 });
 
 const Editor = () => {
-  const [projectName, setProjectName] = useState<string>("Untitled video");
   const timelinePanelRef = useRef<ImperativePanelHandle>(null);
   const { timeline, playerRef } = useStore();
 
@@ -43,14 +41,46 @@ const Editor = () => {
     setFonts(FONTS);
   }, []);
 
+
   useEffect(() => {
-    loadFonts([
-      {
-        name: SECONDARY_FONT,
-        url: SECONDARY_FONT_URL,
-      },
-    ]);
-  }, []);
+    const urlParams = new URLSearchParams(window.location.search);
+    const vid = urlParams.get("vid");
+    const siteid = urlParams.get("siteid");
+    const sessionid = urlParams.get("sessionid");
+  
+    console.log({ vid, siteid })
+
+    const loadVideo = async () => {
+      const formData = new FormData();
+      if(siteid) {
+        formData.append('siteid', siteid);
+      }
+
+      if(!sessionid) {
+        alert('sessionid is required!');
+        return;
+      }
+
+        if (vid) {
+          formData.append('vid', vid);
+        }
+
+        const res = await fetch(`http://admin.local.v4.xinmem.com/adminapi/video-lib/info`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: formData,
+
+        })
+        const data = await res.json()
+        console.log(data)
+    }
+
+    loadVideo();
+  }, [])
+  
+  
 
   useEffect(() => {
     const screenHeight = window.innerHeight;
@@ -83,10 +113,8 @@ const Editor = () => {
   return (
     <div className="flex h-screen w-screen flex-col">
       <Navbar
-        projectName={projectName}
         user={null}
         stateManager={stateManager}
-        setProjectName={setProjectName}
       />
       <div className="flex flex-1">
         <ResizablePanelGroup style={{ flex: 1 }} direction="vertical">

@@ -26,15 +26,10 @@ import { debounce } from "lodash";
 
 export default function Navbar({
   stateManager,
-  setProjectName,
-  projectName,
 }: {
   user: null;
   stateManager: StateManager;
-  setProjectName: (name: string) => void;
-  projectName: string;
 }) {
-  const [title, setTitle] = useState(projectName);
 
   const handleUndo = () => {
     dispatch(HISTORY_UNDO);
@@ -44,25 +39,6 @@ export default function Navbar({
     dispatch(HISTORY_REDO);
   };
 
-  const handleCreateProject = async () => {};
-
-  // Create a debounced function for setting the project name
-  const debouncedSetProjectName = useCallback(
-    debounce((name: string) => {
-      console.log("Debounced setProjectName:", name);
-      setProjectName(name);
-    }, 2000), // 2 seconds delay
-    [],
-  );
-
-  // Update the debounced function whenever the title changes
-  useEffect(() => {
-    debouncedSetProjectName(title);
-  }, [title, debouncedSetProjectName]);
-
-  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTitle(e.target.value);
-  };
 
   return (
     <div
@@ -76,30 +52,7 @@ export default function Navbar({
 
       <div className="flex items-center gap-2">
         <div className="pointer-events-auto flex h-12 w-12 items-center justify-center rounded-md text-zinc-200">
-          <DropdownMenu>
-            <DropdownMenuTrigger>
-              <div className="hover:bg-background-subtle flex h-8 w-8 items-center justify-center">
-                <MenuIcon className="h-5 w-5" />
-              </div>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="z-[300] w-56 p-2" align="start">
-              <DropdownMenuItem
-                onClick={handleCreateProject}
-                className="cursor-pointer text-muted-foreground"
-              >
-                New project
-              </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer text-muted-foreground">
-                My projects
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={handleCreateProject}
-                className="cursor-pointer text-muted-foreground"
-              >
-                Duplicate project
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+
         </div>
         <div className="bg-sidebar pointer-events-auto flex h-12 items-center px-1.5">
           <Button
@@ -125,8 +78,6 @@ export default function Navbar({
         <div className="bg-sidebar pointer-events-auto flex h-12 items-center gap-2 rounded-md px-2.5 text-muted-foreground">
           <AutosizeInput
             name="title"
-            value={title}
-            onChange={handleTitleChange}
             width={200}
             inputClassName="border-none outline-none px-1 bg-background text-sm font-medium text-zinc-200"
           />
@@ -135,22 +86,7 @@ export default function Navbar({
 
       <div className="flex h-14 items-center justify-end gap-2">
         <div className="bg-sidebar pointer-events-auto flex h-12 items-center gap-2 rounded-md px-2.5">
-          <Button
-            className="flex h-8 gap-1 border border-border"
-            variant="outline"
-          >
-            <ShareIcon width={18} /> Share
-          </Button>
           <DownloadPopover stateManager={stateManager} />
-          <Button
-            className="flex h-8 gap-1 border border-border"
-            variant="default"
-            onClick={() => {
-              window.open("https://discord.gg/jrZs3wZyM5", "_blank");
-            }}
-          >
-            Discord
-          </Button>
         </div>
       </div>
     </div>
@@ -159,7 +95,6 @@ export default function Navbar({
 
 const DownloadPopover = ({ stateManager }: { stateManager: StateManager }) => {
   const { actions, exportType } = useDownloadState();
-  const [isExportTypeOpen, setIsExportTypeOpen] = useState(false);
   const [open, setOpen] = useState(false);
 
   const handleExport = () => {
@@ -173,57 +108,13 @@ const DownloadPopover = ({ stateManager }: { stateManager: StateManager }) => {
   };
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <Button
-          className="flex h-8 gap-1 border border-border"
-          variant="outline"
-        >
-          <Download width={18} /> Export
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent
-        align="end"
-        className="bg-sidebar z-[250] flex w-60 flex-col gap-4"
-      >
-        <Label>Export settings</Label>
-
-        <Popover open={isExportTypeOpen} onOpenChange={setIsExportTypeOpen}>
-          <PopoverTrigger asChild>
-            <Button className="w-full justify-between" variant="outline">
-              <div>{exportType.toUpperCase()}</div>
-              <ChevronDown width={16} />
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="bg-background-subtle z-[251] w-[--radix-popover-trigger-width] px-2 py-2">
-            <div
-              className="flex h-8 items-center rounded-sm px-3 text-sm hover:cursor-pointer hover:bg-zinc-800"
-              onClick={() => {
-                actions.setExportType("mp4");
-                setIsExportTypeOpen(false);
-              }}
-            >
-              MP4
-            </div>
-            <div
-              className="flex h-8 items-center rounded-sm px-3 text-sm hover:cursor-pointer hover:bg-zinc-800"
-              onClick={() => {
-                actions.setExportType("json");
-                setIsExportTypeOpen(false);
-              }}
-            >
-              JSON
-            </div>
-          </PopoverContent>
-        </Popover>
-
-        <div>
-          <Button onClick={handleExport} className="w-full">
-            Export
-          </Button>
-        </div>
-      </PopoverContent>
-    </Popover>
+    <Button
+      className="flex h-8 gap-1 border border-border"
+      variant="outline"
+      onClick={handleExport}
+    >
+      <Download width={18} /> Export
+    </Button>
   );
 };
 

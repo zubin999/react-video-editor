@@ -6,25 +6,17 @@ import { DroppableArea } from "./droppable";
 
 const SceneEmpty = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef < HTMLDivElement > (null);
   const [isDraggingOver, setIsDraggingOver] = useState(false);
   const [desiredSize, setDesiredSize] = useState({ width: 0, height: 0 });
   const { size } = useStore();
 
   useEffect(() => {
-    const container = containerRef.current!;
-    const PADDING = 96;
-    const containerHeight = container.clientHeight - PADDING;
-    const containerWidth = container.clientWidth - PADDING;
     const { width, height } = size;
 
-    const desiredZoom = Math.min(
-      containerWidth / width,
-      containerHeight / height,
-    );
     setDesiredSize({
-      width: width * desiredZoom,
-      height: height * desiredZoom,
+      width: width,
+      height: height,
     });
     setIsLoading(false);
   }, [size]);
@@ -45,9 +37,8 @@ const SceneEmpty = () => {
         >
           <DroppableArea
             onDragStateChange={setIsDraggingOver}
-            className={`absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 transform items-center justify-center border border-dashed text-center transition-colors duration-200 ease-in-out ${
-              isDraggingOver ? "border-white bg-white/10" : "border-white/15"
-            }`}
+            className={`absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 transform items-center justify-center border border-dashed text-center transition-colors duration-200 ease-in-out ${isDraggingOver ? "border-white bg-white/10" : "border-white/15"
+              }`}
             style={{
               width: desiredSize.width,
               height: desiredSize.height,
