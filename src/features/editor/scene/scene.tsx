@@ -18,6 +18,7 @@ export default function Scene({
   const { size, trackItemIds } = useStore();
   const { zoom, handlePinch } = useZoom(containerRef, viewerRef, size);
 
+console.log({zoom, size})
   return (
     <div
       style={{

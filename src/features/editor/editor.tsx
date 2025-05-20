@@ -4,7 +4,7 @@ import useStore from "./store/use-store";
 import Navbar from "./navbar";
 import useTimelineEvents from "./hooks/use-timeline-events";
 import Scene from "./scene";
-import StateManager from "@designcombo/state";
+import StateManager, { ADD_VIDEO } from "@designcombo/state";
 import { useEffect, useRef, useState } from "react";
 import {
   ResizableHandle,
@@ -20,6 +20,14 @@ import CropModal from "./crop-modal/crop-modal";
 import useDataState from "./store/use-data-state";
 import { FONTS } from "./data/fonts";
 import FloatingControl from "./control-item/floating-controls/floating-control";
+import {VIDEOS} from "./data/video";
+
+const urlParams = new URLSearchParams(window.location.search);
+const vid = urlParams.get("vid");
+const siteid = urlParams.get("siteid");
+const sessionid = urlParams.get("sessionid");
+const platform = urlParams.get('platform')
+
 
 const stateManager = new StateManager({
   size: {
@@ -29,7 +37,12 @@ const stateManager = new StateManager({
 });
 
 const Editor = () => {
-  const timelinePanelRef = useRef<ImperativePanelHandle>(null);
+
+  if (!sessionid || !siteid || !platform) {
+    return null;
+  }
+
+  const timelinePanelRef = useRef < ImperativePanelHandle > (null);
   const { timeline, playerRef } = useStore();
 
   useTimelineEvents();
@@ -41,46 +54,34 @@ const Editor = () => {
     setFonts(FONTS);
   }, []);
 
-
+  // 初始化视频库数据
   useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const vid = urlParams.get("vid");
-    const siteid = urlParams.get("siteid");
-    const sessionid = urlParams.get("sessionid");
-  
-    console.log({ vid, siteid })
-
-    const loadVideo = async () => {
+    const loadVideos = async () => {
       const formData = new FormData();
-      if(siteid) {
-        formData.append('siteid', siteid);
+      formData.append('siteid', siteid);
+      formData.append('sessionid', sessionid);
+      formData.append('platform', platform);
+      formData.append('page', '1');
+      formData.append('pcount', '20');
+
+      const res = await fetch(`http://app.local.v4.xinmem.com/appapi/video-lib/index`, {
+        method: 'POST',
+        body: formData,
+      })
+      const {data, error_code, error_msg} = await res.json();
+      if (error_code === 0) {
+        VIDEOS.length = 0;
+        VIDEOS.push(...data);
+      }else {
+        console.log(error_msg)
+        return null;
       }
-
-      if(!sessionid) {
-        alert('sessionid is required!');
-        return;
-      }
-
-        if (vid) {
-          formData.append('vid', vid);
-        }
-
-        const res = await fetch(`http://admin.local.v4.xinmem.com/adminapi/video-lib/info`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: formData,
-
-        })
-        const data = await res.json()
-        console.log(data)
     }
 
-    loadVideo();
+    loadVideos();
   }, [])
-  
-  
+
+
 
   useEffect(() => {
     const screenHeight = window.innerHeight;

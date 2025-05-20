@@ -21,7 +21,7 @@ export const Audios = () => {
   };
 
   return (
-    <div className="flex flex-1 flex-col">
+    <div className="flex flex-1 flex-col" style={{ height: "100%" }}>
       <div className="text-text-primary flex h-12 flex-none items-center px-4 text-sm font-medium">
         Audios
       </div>
