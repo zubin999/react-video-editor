@@ -3,11 +3,12 @@ import { ADD_TEXT } from "@designcombo/state";
 import { dispatch } from "@designcombo/events";
 import { useIsDraggingOverTimeline } from "../hooks/is-dragging-over-timeline";
 import Draggable from "@/components/shared/draggable";
-import { TEXT_ADD_PAYLOAD } from "../constants/payload";
+import { getTextAddPayload } from "../constants/payload";
 import { cn } from "@/lib/utils";
 
 export const Texts = () => {
   const isDraggingOverTimeline = useIsDraggingOverTimeline();
+  const TEXT_ADD_PAYLOAD = getTextAddPayload();
 
   const handleAddText = () => {
     dispatch(ADD_TEXT, {
