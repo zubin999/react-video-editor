@@ -3,22 +3,54 @@ import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area";
 
 import { cn } from "@/lib/utils";
 
+type ScrollAreaProps = React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.Root> & {
+  onScroll?: (event: React.UIEvent<HTMLDivElement>) => void;
+  onScrollEnd?: () => void;
+  scrollThreshold?: number; // 滚动到底部的阈值，默认为 20px
+};
+
 const ScrollArea = React.forwardRef<
   React.ElementRef<typeof ScrollAreaPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.Root>
->(({ className, children, ...props }, ref) => (
-  <ScrollAreaPrimitive.Root
-    ref={ref}
-    className={cn("relative overflow-hidden", className)}
-    {...props}
-  >
-    <ScrollAreaPrimitive.Viewport className="h-full w-full rounded-[inherit]">
-      {children}
-    </ScrollAreaPrimitive.Viewport>
-    <ScrollBar />
-    <ScrollAreaPrimitive.Corner />
-  </ScrollAreaPrimitive.Root>
-));
+  ScrollAreaProps
+>(({ className, children, onScroll, onScrollEnd, scrollThreshold = 20, ...props }, ref) => {
+  const viewportRef = React.useRef<HTMLDivElement>(null);
+
+  const handleScroll = React.useCallback(
+    (event: React.UIEvent<HTMLDivElement>) => {
+      // 调用传入的 onScroll 回调
+      if (onScroll) {
+        onScroll(event);
+      }
+
+      // 检测是否滚动到底部
+      if (onScrollEnd && viewportRef.current) {
+        const { scrollTop, scrollHeight, clientHeight } = viewportRef.current;
+        if (scrollHeight - scrollTop - clientHeight <= scrollThreshold) {
+          onScrollEnd();
+        }
+      }
+    },
+    [onScroll, onScrollEnd, scrollThreshold]
+  );
+
+  return (
+    <ScrollAreaPrimitive.Root
+      ref={ref}
+      className={cn("relative overflow-hidden", className)}
+      {...props}
+    >
+      <ScrollAreaPrimitive.Viewport 
+        ref={viewportRef}
+        className="h-full w-full rounded-[inherit]"
+        onScroll={handleScroll}
+      >
+        {children}
+      </ScrollAreaPrimitive.Viewport>
+      <ScrollBar />
+      <ScrollAreaPrimitive.Corner />
+    </ScrollAreaPrimitive.Root>
+  );
+});
 ScrollArea.displayName = ScrollAreaPrimitive.Root.displayName;
 
 const ScrollBar = React.forwardRef<
