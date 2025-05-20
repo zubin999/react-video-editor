@@ -15,10 +15,9 @@ function useZoom(
     const container = containerRef.current;
     if (!container) return;
 
-    const PADDING = 96;
+    const PADDING = 30;
     const containerHeight = container.clientHeight - PADDING;
     const containerWidth = container.clientWidth - PADDING;
-    console.log({containerHeight, containerWidth})
     const { width, height } = size;
 
     viewerRef.current?.infiniteViewer.scrollCenter();

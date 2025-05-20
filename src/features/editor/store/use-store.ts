@@ -38,8 +38,8 @@ interface ITimelineStore {
 
 const useStore = create<ITimelineStore>((set) => ({
   size: {
-    width: 1080,
-    height: 1920,
+    width: 3840,
+    height: 2160,
   },
 
   timeline: null,
