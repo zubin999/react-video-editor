@@ -21,6 +21,7 @@ import useDataState from "./store/use-data-state";
 import { FONTS } from "./data/fonts";
 import FloatingControl from "./control-item/floating-controls/floating-control";
 import {VIDEOS} from "./data/video";
+import useVideoLibrary from "./hooks/use-video-library"; // 导入新的 hook
 
 const urlParams = new URLSearchParams(window.location.search);
 const vid = urlParams.get("vid");
@@ -48,6 +49,7 @@ const Editor = () => {
   useTimelineEvents();
 
   const { setCompactFonts, setFonts } = useDataState();
+  const { loadVideos } = useVideoLibrary(); // 使用 hook
 
   useEffect(() => {
     setCompactFonts(getCompactFontData(FONTS));
@@ -56,30 +58,29 @@ const Editor = () => {
 
   // 初始化视频库数据
   useEffect(() => {
-    const loadVideos = async () => {
-      const formData = new FormData();
-      formData.append('siteid', siteid);
-      formData.append('sessionid', sessionid);
-      formData.append('platform', platform);
-      formData.append('page', '1');
-      formData.append('pcount', '20');
-
-      const res = await fetch(`http://app.local.v4.xinmem.com/appapi/video-lib/index`, {
-        method: 'POST',
-        body: formData,
-      })
-      const {data, error_code, error_msg} = await res.json();
-      if (error_code === 0) {
-        VIDEOS.length = 0;
-        VIDEOS.push(...data);
-      }else {
-        console.log(error_msg)
-        return null;
-      }
-    }
-
-    loadVideos();
-  }, [])
+    // const loadVideos = async () => { // 移除旧的函数
+    //   const formData = new FormData();
+    //   formData.append('siteid', siteid);
+    //   formData.append('sessionid', sessionid);
+    //   formData.append('platform', platform);
+    //   formData.append('page', '1');
+    //   formData.append('pcount', '20');
+    //
+    //   const res = await fetch(`http://app.local.v4.xinmem.com/appapi/video-lib/index`, {
+    //     method: 'POST',
+    //     body: formData,
+    //   })
+    //   const {data, error_code, error_msg} = await res.json();
+    //   if (error_code === 0) {
+    //     VIDEOS.length = 0;
+    //     VIDEOS.push(...data);
+    //   }else {
+    //     console.log(error_msg)
+    //     return null;
+    //   }
+    // }
+    loadVideos({ page: 1, append: false }); // 使用 hook 加载第一页，不追加
+  }, [loadVideos]) // 添加 loadVideos 作为依赖项
 
 
 
