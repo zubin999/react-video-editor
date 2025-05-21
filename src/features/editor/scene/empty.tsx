@@ -45,11 +45,7 @@ const SceneEmpty = () => {
             }}
           >
             <div className="flex flex-col items-center justify-center gap-4 pb-12">
-              <div className="hover:bg-primary-dark cursor-pointer rounded-md border bg-primary p-2 text-secondary transition-colors duration-200">
-                <PlusIcon className="h-5 w-5" aria-hidden="true" />
-              </div>
               <div className="flex flex-col gap-px">
-                <p className="text-sm text-muted-foreground"></p>
                 <p className="text-xs text-muted-foreground/70">
                   点击左侧视频菜单，选择视频
                 </p>

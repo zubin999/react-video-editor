@@ -17,7 +17,7 @@ export const Videos = () => {
 
   const { loading, hasMore, loadNextPage } = useVideoLibrary(); // 使用 hook
 
-  const handleAddVideo = (payload: Partial<IVideo>) => {
+  const handleAddVideo = (payload) => {
     // payload.details.src = "https://cdn.designcombo.dev/videos/timer-20s.mp4";
     dispatch(ADD_VIDEO, {
       payload,
