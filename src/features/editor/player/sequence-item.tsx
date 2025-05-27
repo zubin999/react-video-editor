@@ -126,6 +126,12 @@ export const SequenceItem: Record<
       height: item.details.height,
     };
 
+    const mediaDetails = {
+      ...details,
+      width: '100%',
+      height: 'auto'
+    }
+
     return (
       <Sequence
         key={item.id}
@@ -136,24 +142,36 @@ export const SequenceItem: Record<
         <AbsoluteFill
           data-track-item="transition-element"
           className={`designcombo-scene-item id-${item.id} designcombo-scene-item-type-${item.type}`}
-          style={calculateContainerStyles(details, crop)}
+          style={calculateContainerStyles(details, crop, {
+            width: '100%',
+            height: 'auto',
+            transform: 'none',
+            inset: '0px'
+          })}
         >
           {/* animation layer */}
           <Animated
             style={calculateContainerStyles(details, crop, {
               overflow: "hidden",
+              transform: 'none',
+              height: '100%',
+              width: '100%'
             })}
             animationIn={animationIn}
             animationOut={animationOut}
             durationInFrames={durationInFrames}
           >
-            <div style={calculateMediaStyles(details, crop)}>
+            <div style={calculateMediaStyles(mediaDetails, crop)}>
               <OffthreadVideo
                 startFrom={(item.trim?.from! / 1000) * fps}
                 endAt={(item.trim?.to! / 1000) * fps}
                 playbackRate={playbackRate}
                 src={details.src}
                 volume={details.volume || 0 / 100}
+                style={{
+                  width: '100%',
+                  height: 'auto'
+                }}
               />
             </div>
           </Animated>

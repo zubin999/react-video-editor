@@ -50,21 +50,25 @@ export const useDownloadState = create<DownloadState>((set, get) => ({
         const { payload } = get();
 
         if (!payload) throw new Error("Payload is not defined");
+        console.log({ payload})
 
         // Step 1: POST request to start rendering
-        const response = await fetch("/api/render", {
+        // const formData = new FormData();
+        // formData.append("design", JSON.stringify({
+        //   design: payload,
+        //   options: {
+        //     fps: 30,
+        //     size: payload.size,
+        //     format: "mp4",
+        //   },
+        // }));
+        const response = await fetch(`${import.meta.env.VITE_EXPORT_SERVER_URL}vms/export`, {
           method: "POST",
           headers: {
+            // "Content-Type": "application/x-www-form-urlencoded",
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            design: payload,
-            options: {
-              fps: 30,
-              size: payload.size,
-              format: "mp4",
-            },
-          }),
+          body: JSON.stringify(payload),
         });
 
         if (!response.ok) throw new Error("Failed to submit export request.");

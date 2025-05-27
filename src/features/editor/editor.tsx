@@ -20,10 +20,10 @@ import CropModal from "./crop-modal/crop-modal";
 import useDataState from "./store/use-data-state";
 import { FONTS } from "./data/fonts";
 import FloatingControl from "./control-item/floating-controls/floating-control";
-import {VIDEOS} from "./data/video";
+// import {VIDEOS} from "./data/video";
 import useVideoLibrary from "./hooks/use-video-library";
-import useImageLibrary from "./hooks/use-image-library";
-import useAudioLibrary from "./hooks/use-audio-library";
+// import useImageLibrary from "./hooks/use-image-library";
+// import useAudioLibrary from "./hooks/use-audio-library";
 
 const urlParams = new URLSearchParams(window.location.search);
 const vid = urlParams.get("vid");
@@ -59,8 +59,8 @@ const Editor = () => {
 
   const { setCompactFonts, setFonts } = useDataState();
   const { loadVideos } = useVideoLibrary();
-  const { loadImages } = useImageLibrary();
-  const { loadAudios } = useAudioLibrary();
+  // const { loadImages } = useImageLibrary();
+  // const { loadAudios } = useAudioLibrary();
 
   useEffect(() => {
     setCompactFonts(getCompactFontData(FONTS));
@@ -73,14 +73,14 @@ const Editor = () => {
   }, [loadVideos]);
 
   // 初始化图片库数据
-  useEffect(() => {
-    loadImages({ page: 1, append: false });
-  }, [loadImages]);
+  // useEffect(() => {
+  //   loadImages({ page: 1, append: false });
+  // }, [loadImages]);
 
   // 初始化音频库数据
-  useEffect(() => {
-    loadAudios({ page: 1, platform: AUDIO_PLATFORM, append: false });
-  }, [loadAudios]);
+  // useEffect(() => {
+  //   loadAudios({ page: 1, platform: AUDIO_PLATFORM, append: false });
+  // }, [loadAudios]);
 
   useEffect(() => {
     const screenHeight = window.innerHeight;

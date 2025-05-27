@@ -8,7 +8,7 @@ export default function MenuList() {
     useLayoutStore();
   return (
     <div className="flex w-14 flex-col items-center gap-1 border-r border-border/80 py-2">
-      <Button
+      {/* <Button
         onClick={() => {
           setActiveMenuItem("texts");
           setShowMenuItem(true);
@@ -22,7 +22,7 @@ export default function MenuList() {
         size={"icon"}
       >
         <Icons.type width={16} />
-      </Button>
+      </Button> */}
 
       <Button
         onClick={() => {
@@ -40,7 +40,7 @@ export default function MenuList() {
         <Icons.video width={16} />
       </Button>
 
-      <Button
+      {/* <Button
         onClick={() => {
           setActiveMenuItem("images");
           setShowMenuItem(true);
@@ -54,7 +54,7 @@ export default function MenuList() {
         size={"icon"}
       >
         <Icons.image width={16} />
-      </Button>
+      </Button> */}
       {/* <Button
         onClick={() => {
           setActiveMenuItem("shapes");
@@ -70,7 +70,7 @@ export default function MenuList() {
       >
         <Icons.shapes width={16} />
       </Button> */}
-      <Button
+      {/* <Button
         onClick={() => {
           setActiveMenuItem("audios");
           setShowMenuItem(true);
@@ -84,7 +84,7 @@ export default function MenuList() {
         size={"icon"}
       >
         <Icons.audio width={16} />
-      </Button>
+      </Button>*/}
     </div>
   );
 }

@@ -63,6 +63,7 @@ export const Animated: React.FC<AnimatedProps> = ({
     <div
       style={{
         transform: `rotate(${resetRotationValue}deg) scale(1)`,
+        height: '100%'
       }}
     >
       <div

@@ -3,7 +3,7 @@ import useMediaLibrary from './use-media-library';
 
 const useAudioLibrary = () => {
   const audioLibrary = useMediaLibrary({
-    apiEndpoint: 'http://app.local.v4.xinmem.com/appapi/audio-lib/index',
+    apiEndpoint: `${import.meta.env.VITE_API_BASE_URL}appapi/audio-lib/index`,
     mediaArray: AUDIOS,
     mediaType: '音频',
     requiresPlatform: true,

@@ -5,7 +5,7 @@ import useMediaLibrary from './use-media-library';
 
 const useImageLibrary = () => {
   const imageLibrary = useMediaLibrary({
-    apiEndpoint: 'http://app.local.v4.xinmem.com/appapi/image-lib/index',
+    apiEndpoint: `${import.meta.env.VITE_API_BASE_URL}appapi/image-lib/index`,
     mediaArray: IMAGES,
     mediaType: '图片',
     requiresPlatform: false

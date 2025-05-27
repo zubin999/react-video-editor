@@ -173,7 +173,7 @@ const BasicVideo = ({ trackItem }: { trackItem: ITrackItem & IVideo }) => {
       </div>
       <ScrollArea className="h-full">
         <div className="flex flex-col gap-2 px-4">
-          <div className="mb-4 mt-2">
+          {/* <div className="mb-4 mt-2">
             <Button
               variant={"secondary"}
               size={"icon"}
@@ -183,21 +183,21 @@ const BasicVideo = ({ trackItem }: { trackItem: ITrackItem & IVideo }) => {
             >
               <Crop size={18} />
             </Button>
-          </div>
+          </div> */}
 
           <div className="flex flex-col gap-2">
             <Label className="font-sans text-xs font-semibold text-primary">
               Basic
             </Label>
-            <AspectRatio />
             <Volume
               onChange={(v: number) => handleChangeVolume(v)}
               value={properties.details.volume!}
             />
+            {/* <AspectRatio /> 
             <Opacity
               onChange={(v: number) => handleChangeOpacity(v)}
               value={properties.details.opacity!}
-            />
+            /> 
             <Speed
               value={properties.playbackRate!}
               onChange={handleChangeSpeed}
@@ -205,9 +205,9 @@ const BasicVideo = ({ trackItem }: { trackItem: ITrackItem & IVideo }) => {
             <Rounded
               onChange={(v: number) => onChangeBorderRadius(v)}
               value={properties.details.borderRadius as number}
-            />
+            />*/}
           </div>
-          <Outline
+          {/* <Outline
             onChageBorderWidth={(v: number) => onChangeBorderWidth(v)}
             onChangeBorderColor={(v: string) => onChangeBorderColor(v)}
             valueBorderWidth={properties.details.borderWidth as number}
@@ -218,7 +218,7 @@ const BasicVideo = ({ trackItem }: { trackItem: ITrackItem & IVideo }) => {
             onChange={(v: IBoxShadow) => onChangeBoxShadow(v)}
             value={properties.details.boxShadow!}
             label="Shadow"
-          />
+          /> */}
         </div>
       </ScrollArea>
     </div>

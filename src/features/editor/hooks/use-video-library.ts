@@ -3,7 +3,7 @@ import useMediaLibrary from './use-media-library';
 
 const useVideoLibrary = () => {
   const videoLibrary = useMediaLibrary({
-    apiEndpoint: 'http://app.local.v4.xinmem.com/appapi/video-lib/index',
+    apiEndpoint: `${import.meta.env.VITE_API_BASE_URL}appapi/video-lib/index`,
     mediaArray: VIDEOS,
     mediaType: '视频',
     requiresPlatform: true

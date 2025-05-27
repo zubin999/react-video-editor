@@ -15,7 +15,7 @@ function useZoom(
     const container = containerRef.current;
     if (!container) return;
 
-    const PADDING = 30;
+    const PADDING = 100;
     const containerHeight = container.clientHeight - PADDING;
     const containerWidth = container.clientWidth - PADDING;
     const { width, height } = size;
