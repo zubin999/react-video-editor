@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react';
+import useDataState from '../store/use-data-state';
 
 interface LoadMediaOptions {
   page: number;
@@ -20,8 +21,9 @@ const useMediaLibrary = (config: MediaLibraryConfig) => {
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const [platform, setPlatform] = useState(0); // 新增：platform 状态
-
+  
   const loadMedia = useCallback(async ({ page, platform, append = true }: LoadMediaOptions) => {
+
     if (loading || (!hasMore && append)) return;
 
     // 检查 platform 参数是否必需但未提供
@@ -34,6 +36,9 @@ const useMediaLibrary = (config: MediaLibraryConfig) => {
     setLoading(true);
 
     try {
+      // const urlParams = new URLSearchParams(window.location.search);
+      // const sessionid = sid;
+
       const urlParams = new URLSearchParams(window.location.search);
       const sessionid = urlParams.get("sessionid");
 
@@ -85,7 +90,7 @@ const useMediaLibrary = (config: MediaLibraryConfig) => {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [loading, hasMore]);
 
   const loadNextPage = useCallback(() => {
     if (!loading && hasMore) {

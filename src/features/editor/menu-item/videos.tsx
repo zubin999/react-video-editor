@@ -7,15 +7,14 @@ import { generateId } from "@designcombo/timeline";
 import { IVideo } from "@designcombo/types";
 import React, { useState } from "react";
 import { useIsDraggingOverTimeline } from "../hooks/is-dragging-over-timeline";
-import useVideoLibrary from "../hooks/use-video-library"; // 导入新的 hook
 
-export const Videos = () => {
+export const Videos = ({videoLibrary}) => {
   const isDraggingOverTimeline = useIsDraggingOverTimeline();
   // const [page, setPage] = useState(1); // 移除本地状态
   // const [loading, setLoading] = useState(false); // 移除本地状态
   // const [hasMore, setHasMore] = useState(true); // 移除本地状态
 
-  const { loading, hasMore, loadNextPage } = useVideoLibrary(); // 使用 hook
+  const { loading, hasMore, loadNextPage } = videoLibrary; // 使用 hook
 
   const handleAddVideo = (payload) => {
     // payload.details.src = "https://cdn.designcombo.dev/videos/timer-20s.mp4";

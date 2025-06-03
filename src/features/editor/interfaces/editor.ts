@@ -39,8 +39,12 @@ export interface ICompactFont {
 export interface IDataState {
   fonts: IFont[];
   compactFonts: ICompactFont[];
+  sessionid: string;
+  platform: number;
   setFonts: (fonts: IFont[]) => void;
   setCompactFonts: (compactFonts: ICompactFont[]) => void;
+  setSessionid: (id: string) => void;
+  setPlatform: (platform: number) => void;
 }
 
 export type IPropertyType = "textContent" | "fontSize" | "color";

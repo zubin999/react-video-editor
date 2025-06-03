@@ -29,12 +29,12 @@ const urlParams = new URLSearchParams(window.location.search);
 const vid = urlParams.get("vid");
 const sessionid = urlParams.get("sessionid");
 
-const platform = urlParams.get('platform')
+const platform = Number(urlParams.get('platform'))
 let VIDEO_PLATFORM, AUDIO_PLATFORM;
-if (platform === '1') {
+if (platform === 1) {
   VIDEO_PLATFORM = 16;
   AUDIO_PLATFORM = 20;
-}else if(platform === '2') {
+}else if(platform === 2) {
   VIDEO_PLATFORM = 8;
   AUDIO_PLATFORM = 8;
 }
@@ -57,20 +57,23 @@ const Editor = () => {
 
   useTimelineEvents();
 
-  const { setCompactFonts, setFonts } = useDataState();
-  const { loadVideos } = useVideoLibrary();
+  const { setCompactFonts, setFonts, setSessionid, setPlatform } = useDataState();
+  const videoLibrary = useVideoLibrary();
+  const { loadVideos } = videoLibrary;
   // const { loadImages } = useImageLibrary();
   // const { loadAudios } = useAudioLibrary();
 
   useEffect(() => {
     setCompactFonts(getCompactFontData(FONTS));
     setFonts(FONTS);
-  }, []);
+    setSessionid(sessionid);
+    setPlatform(Number(platform));
+  }, [sessionid, platform]);
 
   // 初始化视频库数据
   useEffect(() => {
     loadVideos({ page: 1, platform: VIDEO_PLATFORM, append: false });
-  }, [loadVideos]);
+  }, [sessionid]);
 
   // 初始化图片库数据
   // useEffect(() => {
@@ -123,7 +126,7 @@ const Editor = () => {
             <div className="flex h-full flex-1">
               <div className="bg-sidebar flex flex-none border-r border-border/80">
                 <MenuList />
-                <MenuItem />
+                <MenuItem videoLibrary={videoLibrary}/>
               </div>
               <div
                 style={{

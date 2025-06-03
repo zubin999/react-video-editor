@@ -14,6 +14,8 @@ interface DownloadState {
   output?: Output;
   payload?: IDesign;
   displayProgressModal: boolean;
+  sessionid?: string;
+  platform?: number;
   actions: {
     setProjectId: (projectId: string) => void;
     setExporting: (exporting: boolean) => void;
@@ -23,6 +25,8 @@ interface DownloadState {
     setOutput: (output: Output) => void;
     startExport: () => void;
     setDisplayProgressModal: (displayProgressModal: boolean) => void;
+    setSessionid: (sessionid: string) => void;
+    setPlatform: (platform: number) => void;
   };
 }
 
@@ -32,6 +36,8 @@ export const useDownloadState = create<DownloadState>((set, get) => ({
   exportType: "mp4",
   progress: 0,
   displayProgressModal: false,
+  sessionid: "",
+  platform: 0,
   actions: {
     setProjectId: (projectId) => set({ projectId }),
     setExporting: (exporting) => set({ exporting }),
@@ -41,60 +47,85 @@ export const useDownloadState = create<DownloadState>((set, get) => ({
     setOutput: (output) => set({ output }),
     setDisplayProgressModal: (displayProgressModal) =>
       set({ displayProgressModal }),
+    setSessionid: (sessionid) => set({ sessionid }),
+    setPlatform: (platform) => set({ platform }),
     startExport: async () => {
       try {
         // Set exporting to true at the start
         set({ exporting: true, displayProgressModal: true });
 
         // Assume payload to be stored in the state for POST request
-        const { payload } = get();
+        const { payload, platform, sessionid } = get();
+
 
         if (!payload) throw new Error("Payload is not defined");
-        console.log({ payload})
+        if (!platform) throw new Error("Platform is not defined");
+        if (!sessionid) throw new Error("Sessionid is not defined");
+
+        const exportParams = {
+          sessionid,
+          platform,
+          ...payload,
+        }
 
         // Step 1: POST request to start rendering
-        // const formData = new FormData();
-        // formData.append("design", JSON.stringify({
-        //   design: payload,
-        //   options: {
-        //     fps: 30,
-        //     size: payload.size,
-        //     format: "mp4",
-        //   },
-        // }));
         const response = await fetch(`${import.meta.env.VITE_EXPORT_SERVER_URL}vms/export`, {
           method: "POST",
           headers: {
             // "Content-Type": "application/x-www-form-urlencoded",
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(payload),
+          body: JSON.stringify(exportParams),
         });
 
         if (!response.ok) throw new Error("Failed to submit export request.");
 
         const jobInfo = await response.json();
-        const videoId = jobInfo.video.id;
+        console.log({jobInfo})
+        // const videoId = jobInfo.video.id;
+        if (jobInfo.code != 0) {
+          throw new Error(jobInfo.msg)
+        }
+
+        var formBody = [`sessionid=${sessionid}`, `platform=${platform}`];
+        var saveParams: string = "";
+        if (jobInfo?.data?.basic) {
+          const details = jobInfo?.data?.basic;
+          for (var property in details) {
+            var encodedKey = encodeURIComponent(property);
+            var encodedValue = encodeURIComponent(details[property]);
+            formBody.push(encodedKey + "=" + encodedValue);
+          }
+          saveParams = formBody.join("&");
+        }
 
         // Step 2 & 3: Polling for status updates
         const checkStatus = async () => {
           const statusResponse = await fetch(
-            `/api/render?id=${videoId}&type=VIDEO_RENDERING`,
+            `${import.meta.env.VITE_API_BASE_URL}appapi/video-lib/save`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+              },
+              body: saveParams,
+            }
           );
 
           if (!statusResponse.ok)
             throw new Error("Failed to fetch export status.");
 
           const statusInfo = await statusResponse.json();
-          const { status, progress, url } = statusInfo.video;
+          console.log({statusInfo})
+          // const { status, progress, url } = statusInfo.video;
 
-          set({ progress });
+          // set({ progress });
 
-          if (status === "COMPLETED") {
-            set({ exporting: false, output: { url, type: get().exportType } });
-          } else if (status === "PENDING") {
-            setTimeout(checkStatus, 2500);
-          }
+          // if (status === "COMPLETED") {
+          //   set({ exporting: false, output: { url, type: get().exportType } });
+          // } else if (status === "PENDING") {
+          //   setTimeout(checkStatus, 2500);
+          // }
         };
 
         checkStatus();

@@ -5,7 +5,7 @@ import { Elements } from "./elements";
 import { Images } from "./images";
 import { Videos } from "./videos";
 
-const ActiveMenuItem = () => {
+const ActiveMenuItem = ({videoLibrary}) => {
   const { activeMenuItem } = useLayoutStore();
 
   if (activeMenuItem === "texts") {
@@ -15,7 +15,7 @@ const ActiveMenuItem = () => {
     return <Elements />;
   }
   if (activeMenuItem === "videos") {
-    return <Videos />;
+    return <Videos videoLibrary={videoLibrary}/>;
   }
 
   if (activeMenuItem === "audios") {
@@ -29,10 +29,10 @@ const ActiveMenuItem = () => {
   return null;
 };
 
-export const MenuItem = () => {
+export const MenuItem = ({videoLibrary}) => {
   return (
     <div className="w-[300px] flex-1">
-      <ActiveMenuItem />
+      <ActiveMenuItem videoLibrary={videoLibrary} />
     </div>
   );
 };

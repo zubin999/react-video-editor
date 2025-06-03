@@ -23,6 +23,7 @@ import { useDownloadState } from "./store/use-download-state";
 import DownloadProgressModal from "./download-progress-modal";
 import AutosizeInput from "@/components/ui/autosize-input";
 import { debounce } from "lodash";
+import useDataState from "./store/use-data-state";
 
 export default function Navbar({
   stateManager,
@@ -48,7 +49,6 @@ export default function Navbar({
       }}
       className="bg-sidebar pointer-events-none flex h-[58px] items-center border-b border-border/80 px-2"
     >
-      <DownloadProgressModal />
 
       <div className="flex items-center gap-2">
         <div className="pointer-events-auto flex h-12 w-12 items-center justify-center rounded-md text-zinc-200">
@@ -94,8 +94,8 @@ export default function Navbar({
 }
 
 const DownloadPopover = ({ stateManager }: { stateManager: StateManager }) => {
-  const { actions, exportType } = useDownloadState();
-  const [open, setOpen] = useState(false);
+  const { actions } = useDownloadState();
+  const {sessionid, platform} = useDataState();
 
   const handleExport = () => {
     const data: IDesign = {
@@ -104,6 +104,8 @@ const DownloadPopover = ({ stateManager }: { stateManager: StateManager }) => {
     };
 
     actions.setState({ payload: data });
+    actions.setSessionid(sessionid);
+    actions.setPlatform(platform);
     actions.startExport();
   };
 
