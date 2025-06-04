@@ -23,7 +23,6 @@ export const getSign = (params: FormData | URLSearchParams) => {
     const str1: string = str.join('&')
     const secret: string = import.meta.env.VITE_API_SECRET;
       let md5sign = Md5.hashStr(`${str1}${secret}`);
-      console.log({params, md5sign, str1, secret})
       
       return md5sign;
 
