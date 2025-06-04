@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import useDataState from '../store/use-data-state';
+import {httpReq} from '@/utils/sign'
 
 interface LoadMediaOptions {
   page: number;
@@ -60,14 +60,9 @@ const useMediaLibrary = (config: MediaLibraryConfig) => {
       formData.append('page', page.toString());
       formData.append('pcount', '20');
 
-      const res = await fetch(apiEndpoint, {
-        method: 'POST',
-        body: formData,
-      });
+      const data = await httpReq(formData, apiEndpoint);
 
-      const { data, error_code, error_msg } = await res.json();
-
-      if (error_code === 0 && Array.isArray(data)) {
+      if (Array.isArray(data)) {
         if (data.length > 0) {
           if (append) {
             mediaArray.push(...data);
@@ -78,10 +73,11 @@ const useMediaLibrary = (config: MediaLibraryConfig) => {
           setPage(page);
           setHasMore(true);
         } else {
+          console.log("data.length is 0")
           setHasMore(false);
         }
       } else {
-        console.error(error_msg);
+        console.log("data is not array")
         setHasMore(false);
       }
     } catch (error) {
