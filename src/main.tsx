@@ -6,12 +6,19 @@ import "non.geist";
 import "./index.css";
 import App from "./app";
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <App />,
-  },
-]);
+// 获取当前环境的base path
+const basePath = import.meta.env.BASE_URL;
+
+const router = createBrowserRouter(
+  [
+    {
+      path: "/",
+      element: <App />,
+    },
+  ],
+  { basename: basePath } // 添加这一行
+);
+
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
