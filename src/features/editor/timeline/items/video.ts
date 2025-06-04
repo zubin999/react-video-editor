@@ -301,7 +301,7 @@ class Video extends VideoBase {
     const timestamps = this.generateTimestamps(startTime, thumbnailsCount);
 
     // Match and prepare thumbnails
-    let thumbnailsArr = await this.clip.thumbnailsList(this.thumbnailWidth, {
+    const thumbnailsArr = await this.clip.thumbnailsList(this.thumbnailWidth, {
       timestamps: timestamps.map((timestamp) => timestamp * 1e6),
     });
 

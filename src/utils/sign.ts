@@ -2,12 +2,12 @@ import {Md5} from 'ts-md5'
 
 function customEncodeURIComponent(str) {
     return encodeURIComponent(str).replace(/\(/g, '%28').replace(/\)/g, '%29')
-        .replace(/\!/g, '%21').replace(/\*/g, '%2A').replace(/\'/g, '%27');
+        .replace(/!/g, '%21').replace(/\*/g, '%2A').replace(/'/g, '%27');
   }
 
 export const getSign = (params: FormData | URLSearchParams) => {
     
-    let str: string[] = [];
+    const str: string[] = [];
     if (params instanceof FormData) {
         Array.from(params.keys()).sort().forEach(key => {
             const v = customEncodeURIComponent(params.get(key));
@@ -22,7 +22,7 @@ export const getSign = (params: FormData | URLSearchParams) => {
 
     const str1: string = str.join('&')
     const secret: string = import.meta.env.VITE_API_SECRET;
-      let md5sign = Md5.hashStr(`${str1}${secret}`);
+    const md5sign = Md5.hashStr(`${str1}${secret}`);
       
       return md5sign;
 

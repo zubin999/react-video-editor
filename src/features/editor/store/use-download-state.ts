@@ -87,13 +87,13 @@ export const useDownloadState = create<DownloadState>((set, get) => ({
           throw new Error(jobInfo.msg)
         }
 
-        var formBody = [`sessionid=${sessionid}`, `platform=${platform}`];
-        var saveParams: string = "";
+        const formBody = [`sessionid=${sessionid}`, `platform=${platform}`];
+        let saveParams: string = "";
         if (jobInfo?.data?.basic) {
           const details = jobInfo?.data?.basic;
-          for (var property in details) {
-            var encodedKey = encodeURIComponent(property);
-            var encodedValue = encodeURIComponent(details[property]);
+          for (const property in details) {
+            const encodedKey = encodeURIComponent(property);
+            const encodedValue = encodeURIComponent(details[property]);
             formBody.push(encodedKey + "=" + encodedValue);
           }
           saveParams = formBody.join("&");
