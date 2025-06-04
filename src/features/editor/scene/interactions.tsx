@@ -175,7 +175,7 @@ export function SceneInteractions({
   return (
     <Moveable
       ref={moveableRef}
-      rotationPosition={"bottom"}
+      rotationPosition={"none"}
       renderDirections={selectionInfo.controls}
       {...selectionInfo.ables}
       origin={false}
