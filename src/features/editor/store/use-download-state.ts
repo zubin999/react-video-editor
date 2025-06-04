@@ -1,3 +1,4 @@
+import { httpReq } from "@/utils/sign";
 import { IDesign } from "@designcombo/types";
 import { create } from "zustand";
 
@@ -100,23 +101,12 @@ export const useDownloadState = create<DownloadState>((set, get) => ({
         }
 
         // Step 2 & 3: Polling for status updates
-        const checkStatus = async () => {
-          const statusResponse = await fetch(
-            `${import.meta.env.VITE_API_BASE_URL}appapi/video-lib/save`,
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
-              },
-              body: saveParams,
-            }
-          );
-
-          if (!statusResponse.ok)
-            throw new Error("Failed to fetch export status.");
-
-          const statusInfo = await statusResponse.json();
-          console.log({statusInfo})
+        try {
+          await httpReq(new URLSearchParams(saveParams), `${import.meta.env.VITE_API_BASE_URL}appapi/video-lib/save`)
+        } catch (error) {
+          throw new Error(error)
+        }
+        
           // const { status, progress, url } = statusInfo.video;
 
           // set({ progress });
@@ -126,9 +116,7 @@ export const useDownloadState = create<DownloadState>((set, get) => ({
           // } else if (status === "PENDING") {
           //   setTimeout(checkStatus, 2500);
           // }
-        };
 
-        checkStatus();
       } catch (error) {
         console.error(error);
         set({ exporting: false });

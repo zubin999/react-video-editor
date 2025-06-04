@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --port=4138",
-    "build": "tsc -b && vite build && mv dist ../live/docker/",
+    "build": "tsc -b && vite build --mode production && rm -rf ../live/docker/dist && mv dist ../live/docker",
     "lint": "eslint .",
     "preview": "vite preview"
   },
