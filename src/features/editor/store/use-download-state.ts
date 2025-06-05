@@ -1,6 +1,7 @@
 import { httpReq } from "@/utils/sign";
 import { IDesign } from "@designcombo/types";
 import { create } from "zustand";
+import { toast } from "@/components/ui/use-toast";
 
 interface Output {
   url: string;
@@ -69,6 +70,12 @@ export const useDownloadState = create<DownloadState>((set, get) => ({
           ...payload,
         }
 
+        toast({
+          title: "正在导出...",
+          description: "请耐心等待...",
+          duration: 2500
+        })
+
         // Step 1: POST request to start rendering
         const response = await fetch(`${import.meta.env.VITE_EXPORT_SERVER_URL}vms/export`, {
           method: "POST",
@@ -87,6 +94,7 @@ export const useDownloadState = create<DownloadState>((set, get) => ({
         if (jobInfo.code != 0) {
           throw new Error(jobInfo.msg)
         }
+        
 
         const formBody = [`sessionid=${sessionid}`, `platform=${platform}`];
         let saveParams: string = "";
@@ -107,6 +115,11 @@ export const useDownloadState = create<DownloadState>((set, get) => ({
           throw new Error(error)
         }
         
+        toast({
+          title: "导出成功",
+          description: "请在视频库查看导出的视频",
+          duration: 3500
+        })
           // const { status, progress, url } = statusInfo.video;
 
           // set({ progress });
