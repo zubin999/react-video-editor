@@ -12,36 +12,45 @@ import {
 	ResizablePanelGroup,
 } from "@/components/ui/resizable";
 import { ImperativePanelHandle } from "react-resizable-panels";
-import { getCompactFontData, loadFonts } from "./utils/fonts";
-import MenuList from "./menu-list";
+// import { getCompactFontData, loadFonts } from "./utils/fonts";
+// import MenuList from "./menu-list";
 import { MenuItem } from "./menu-item";
 import { ControlItem } from "./control-item";
-import CropModal from "./crop-modal/crop-modal";
+// import CropModal from "./crop-modal/crop-modal";
 import useDataState from "./store/use-data-state";
-import { FONTS } from "./data/fonts";
+// import { FONTS } from "./data/fonts";
 import FloatingControl from "./control-item/floating-controls/floating-control";
 // import {VIDEOS} from "./data/video";
-import useVideoLibrary from "./hooks/use-video-library";
+// import useVideoLibrary from "./hooks/use-video-library";
 import { httpReq } from "@/utils/sign";
 import { dispatch } from "@designcombo/events";
 import { generateId } from "@designcombo/timeline";
-import { IVideo } from "@designcombo/types";
+import { useSearchParams } from "react-router-dom";
+import { videoService } from "./data/video-service";
+// import { IVideo } from "@designcombo/types";
+// import { VIDEOS } from "./data/video";
+// 在您的editor.tsx文件中添加以下代码
+// 假设您已有的imports...
+// import { useVideoContext } from "./context/video-context";
+
+  
+// import { IVideo } from "@designcombo/types";
 // import useImageLibrary from "./hooks/use-image-library";
 // import useAudioLibrary from "./hooks/use-audio-library";
 
-const urlParams = new URLSearchParams(window.location.search);
-const vid = Number(urlParams.get("vid"));
-const sessionid = urlParams.get("sessionid");
+// const urlParams = new URLSearchParams(window.location.search);
+// const vid = Number(urlParams.get("vid"));
+// const sessionid = urlParams.get("sessionid");
 
-const platform = Number(urlParams.get('platform'))
-let VIDEO_PLATFORM, AUDIO_PLATFORM;
-if (platform === 1) {
-	VIDEO_PLATFORM = 16;
-	AUDIO_PLATFORM = 20;
-} else if (platform === 2) {
-	VIDEO_PLATFORM = 8;
-	AUDIO_PLATFORM = 8;
-}
+// const platform = Number(urlParams.get('platform'))
+// let VIDEO_PLATFORM, AUDIO_PLATFORM;
+// if (platform === 1) {
+// 	VIDEO_PLATFORM = 16;
+// 	AUDIO_PLATFORM = 20;
+// } else if (platform === 2) {
+// 	VIDEO_PLATFORM = 8;
+// 	AUDIO_PLATFORM = 8;
+// }
 
 const stateManager = new StateManager({
 	size: {
@@ -52,18 +61,34 @@ const stateManager = new StateManager({
 
 const Editor = () => {
 
+	const [searchParams] = useSearchParams();
+	const sessionid = searchParams.get('sessionid');
+	const platform = searchParams.get('platform');
+	const vid = Number(searchParams.get('vid'));
+	let VIDEO_PLATFORM, AUDIO_PLATFORM;
+
 	if (!sessionid || !platform) {
 		return null;
 	}
 
+	if (platform === '1') {
+		VIDEO_PLATFORM = 16;
+		AUDIO_PLATFORM = 20;
+	}else if(platform == '2') {
+		VIDEO_PLATFORM = 8;
+		AUDIO_PLATFORM = 8;
+	}
+
+
 	const timelinePanelRef = useRef < ImperativePanelHandle > (null);
 	const { timeline, playerRef } = useStore();
+	const [videos, setVideos] = useState([])
 
 	useTimelineEvents();
 
 	const { setSessionid, setPlatform } = useDataState();
-	const videoLibrary = useVideoLibrary();
-	const { loadVideos } = videoLibrary;
+	// const videoLibrary = useVideoLibrary();
+	// const { loadVideos } = videoLibrary;
 	// const { loadImages } = useImageLibrary();
 	// const { loadAudios } = useAudioLibrary();
 
@@ -75,6 +100,19 @@ const Editor = () => {
 		window.sessionStorage.setItem('sessionid', sessionid)
 		window.sessionStorage.setItem('platform', VIDEO_PLATFORM)
 	}, [sessionid, platform]);
+
+	useEffect(() => {
+		setVideos(videoService.getVideosSnapshot());
+
+	}, [])
+
+  // 获取视频上下文
+//   const { videos, addVideo } = useVideoContext();
+  
+  // 您可以在这里添加视频
+//   const handleAddVideoFromEditor = (newVideo) => {
+//     addVideo(newVideo);
+//   };
 
 	useEffect(() => {
 		if (vid > 0) {
@@ -95,6 +133,8 @@ const Editor = () => {
 							scaleMode: "fit",
 						}
 					})
+					videoService.addVideo(payload)
+					// handleAddVideoFromEditor(payload)
 				})
 		}
 	}, [])
@@ -154,7 +194,7 @@ const Editor = () => {
 						<div className="flex h-full flex-1">
 							<div className="bg-sidebar flex flex-none border-r border-border/80">
 								{/* <MenuList /> */}
-								<MenuItem videoLibrary={videoLibrary} />
+								<MenuItem />
 							</div>
 							<div
 								style={{

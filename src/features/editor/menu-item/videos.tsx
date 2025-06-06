@@ -1,25 +1,36 @@
 import Draggable from "@/components/shared/draggable";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { VIDEOS as initialVideos } from "../data/video";
 import { dispatch } from "@designcombo/events";
 import { ADD_VIDEO } from "@designcombo/state";
 import { generateId } from "@designcombo/timeline";
 import { IVideo } from "@designcombo/types";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useIsDraggingOverTimeline } from "../hooks/is-dragging-over-timeline";
 import { Button } from "@/components/ui/button";
 import { CirclePlus } from "lucide-react";
 import VideoDialog from "@/components/video-dialog";
+// import { useVideoContext } from "../context/video-context";
+import { videoService } from "../data/video-service";
 
 
-export const Videos = ({videoLibrary}) => {
+export const Videos = () => {
   const isDraggingOverTimeline = useIsDraggingOverTimeline();
-  // 将 VIDEOS 转换为组件状态
-  const [videos, setVideos] = useState([...initialVideos]);
+  // const { videos, addVideo } = useVideoContext(); // Use the context instead of local state
   const [open, setOpen] = useState(false);
+  const [videos, setVideos] = useState<Partial<IVideo>[]>([])
+
+  useEffect(() => {
+    setVideos(videoService.getVideosSnapshot())
+    const subscription = videoService.getVideos().subscribe(updateVideos => {
+      setVideos(updateVideos)
+    })
+
+    return () => subscription.unsubscribe();
+  }, [])
+
 
   const handleAddVideo = (payload) => {
-    console.log({payload})
+    console.log({payload});
     dispatch(ADD_VIDEO, {
       payload,
       options: {
@@ -30,18 +41,18 @@ export const Videos = ({videoLibrary}) => {
   };
 
   const videoDialog = () => {
-    console.log('video dialog')
+    console.log('video dialog');
     if (!open) {
-      setOpen(true)
+      setOpen(true);
     }
-  }
+  };
 
   const handleSelectVideo = (video) => {
-    console.log({video})
-    // 使用 setVideos 更新状态，而不是直接修改数组
-    setVideos(prevVideos => [...prevVideos, video]);
-    console.log({videos: [...videos, video]})
-  }
+    console.log({video});
+    // Use the context's addVideo function
+    // addVideo(video);
+    videoService.addVideo(video)
+  };
 
   return (
     <div className="flex flex-1 flex-col" style={{ height: "100%" }}>
