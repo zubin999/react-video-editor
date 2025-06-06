@@ -1,9 +1,16 @@
 import { Md5 } from 'ts-md5'
-import useDataState from '@/features/editor/store/use-data-state'
+// import useDataState from '@/features/editor/store/use-data-state'
 
-function customEncodeURIComponent(str) {
-    return encodeURIComponent(str).replace(/\(/g, '%28').replace(/\)/g, '%29')
-        .replace(/!/g, '%21').replace(/\*/g, '%2A').replace(/'/g, '%27');
+function customEncodeURIComponent(str: string|null | FormDataEntryValue) {
+    if (str == null) {
+        return '';
+    }
+
+    if (typeof str === 'string') {
+        return encodeURIComponent(str).replace(/\(/g, '%28').replace(/\)/g, '%29')
+            .replace(/!/g, '%21').replace(/\*/g, '%2A').replace(/'/g, '%27');
+    }
+
 }
 
 export const getSign = (params: FormData | URLSearchParams) => {
