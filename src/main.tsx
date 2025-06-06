@@ -7,7 +7,6 @@ import "./index.css";
 import App from "./app";
 import { Toaster } from "@/components/ui/toaster";
 
-const basePath = import.meta.env.BASE_URL;
 
 const router = createBrowserRouter(
   [
@@ -16,7 +15,6 @@ const router = createBrowserRouter(
       element: <App />,
     },
   ],
-  { basename: basePath }
 );
 
 createRoot(document.getElementById("root")!).render(

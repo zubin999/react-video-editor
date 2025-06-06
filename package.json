@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite --port=4138",
     "build": "tsc -b && vite build --mode production && rm -rf ../live/docker/dist && mv dist ../live/docker",
-    "lint": "eslint .",
+    "lint": "eslint . --fix",
     "preview": "vite preview"
   },
   "dependencies": {

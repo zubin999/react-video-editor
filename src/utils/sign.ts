@@ -1,4 +1,5 @@
 import { Md5 } from 'ts-md5'
+import useDataState from '@/features/editor/store/use-data-state'
 
 function customEncodeURIComponent(str) {
     return encodeURIComponent(str).replace(/\(/g, '%28').replace(/\)/g, '%29')
@@ -37,10 +38,15 @@ export async function httpReq(params: FormData | URLSearchParams, url: string, m
         .join("")
         .substring(0, 16);
 
+
     params.append('timestamp', timeStamp.toString());
     params.append('uniqueid', uniqueId);
 
-    const res = await fetch(url, {
+
+    params.append('sessionid', window.sessionStorage.getItem('sessionid') || '')
+    params.append('platform', window.sessionStorage.getItem('platform') || '1')
+
+    const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}${url}`, {
         method: method,
         headers: {
             'Sign': getSign(params),

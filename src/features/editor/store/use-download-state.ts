@@ -110,7 +110,7 @@ export const useDownloadState = create<DownloadState>((set, get) => ({
 
         // Step 2 & 3: Polling for status updates
         try {
-          await httpReq(new URLSearchParams(saveParams), `${import.meta.env.VITE_API_BASE_URL}appapi/video-lib/save`)
+          await httpReq(new URLSearchParams(saveParams), `appapi/video-lib/save`)
         } catch (error) {
           throw new Error(error)
         }

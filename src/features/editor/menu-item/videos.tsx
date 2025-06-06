@@ -14,10 +14,11 @@ export const Videos = ({videoLibrary}) => {
   // const [loading, setLoading] = useState(false); // 移除本地状态
   // const [hasMore, setHasMore] = useState(true); // 移除本地状态
 
-  const { loading, hasMore, loadNextPage } = videoLibrary; // 使用 hook
+  // const { loading, hasMore, loadNextPage } = videoLibrary; // 使用 hook
 
   const handleAddVideo = (payload) => {
     // payload.details.src = "https://cdn.designcombo.dev/videos/timer-20s.mp4";
+    console.log({payload})
     dispatch(ADD_VIDEO, {
       payload,
       options: {
@@ -33,7 +34,7 @@ export const Videos = ({videoLibrary}) => {
       <div className="text-text-primary flex h-12 flex-none items-center px-4 text-sm font-medium">
         Videos
       </div>
-      <ScrollArea onScrollEnd={loadNextPage}> {/* 使用 hook 提供的加载下一页函数 */}
+      <ScrollArea>
         <div className="masonry-sm px-4">
           {VIDEOS.map((video, index) => {
             return (
@@ -46,16 +47,7 @@ export const Videos = ({videoLibrary}) => {
             );
           })}
         </div>
-        {loading && (
-          <div className="flex justify-center py-4">
-            <span className="text-sm text-muted-foreground">加载中...</span>
-          </div>
-        )}
-        {!hasMore && !loading && VIDEOS.length > 0 && ( // 添加没有更多数据的提示
-           <div className="flex justify-center py-4">
-            <span className="text-sm text-muted-foreground">没有更多视频了</span>
-          </div>
-        )}
+        
       </ScrollArea>
     </div>
   );
