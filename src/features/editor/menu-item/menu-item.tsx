@@ -31,7 +31,7 @@ const ActiveMenuItem = ({videoLibrary}) => {
 
 export const MenuItem = ({videoLibrary}) => {
   return (
-    <div className="w-[300px] flex-1">
+    <div className="w-[350px] flex-1">
       <ActiveMenuItem videoLibrary={videoLibrary} />
     </div>
   );

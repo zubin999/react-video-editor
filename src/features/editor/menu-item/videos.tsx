@@ -1,23 +1,24 @@
 import Draggable from "@/components/shared/draggable";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { VIDEOS } from "../data/video";
+import { VIDEOS as initialVideos } from "../data/video";
 import { dispatch } from "@designcombo/events";
 import { ADD_VIDEO } from "@designcombo/state";
 import { generateId } from "@designcombo/timeline";
 import { IVideo } from "@designcombo/types";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useIsDraggingOverTimeline } from "../hooks/is-dragging-over-timeline";
+import { Button } from "@/components/ui/button";
+import { CirclePlus } from "lucide-react";
+import VideoDialog from "@/components/video-dialog";
+
 
 export const Videos = ({videoLibrary}) => {
   const isDraggingOverTimeline = useIsDraggingOverTimeline();
-  // const [page, setPage] = useState(1); // 移除本地状态
-  // const [loading, setLoading] = useState(false); // 移除本地状态
-  // const [hasMore, setHasMore] = useState(true); // 移除本地状态
-
-  // const { loading, hasMore, loadNextPage } = videoLibrary; // 使用 hook
+  // 将 VIDEOS 转换为组件状态
+  const [videos, setVideos] = useState([...initialVideos]);
+  const [open, setOpen] = useState(false);
 
   const handleAddVideo = (payload) => {
-    // payload.details.src = "https://cdn.designcombo.dev/videos/timer-20s.mp4";
     console.log({payload})
     dispatch(ADD_VIDEO, {
       payload,
@@ -28,6 +29,19 @@ export const Videos = ({videoLibrary}) => {
     });
   };
 
+  const videoDialog = () => {
+    console.log('video dialog')
+    if (!open) {
+      setOpen(true)
+    }
+  }
+
+  const handleSelectVideo = (video) => {
+    console.log({video})
+    // 使用 setVideos 更新状态，而不是直接修改数组
+    setVideos(prevVideos => [...prevVideos, video]);
+    console.log({videos: [...videos, video]})
+  }
 
   return (
     <div className="flex flex-1 flex-col" style={{ height: "100%" }}>
@@ -35,8 +49,11 @@ export const Videos = ({videoLibrary}) => {
         Videos
       </div>
       <ScrollArea>
-        <div className="masonry-sm px-4">
-          {VIDEOS.map((video, index) => {
+        <div className="masonry-sm px-4 pb-2 flex flex-col" style={{
+          columnCount: 1,
+          gap: '1rem',
+        }}>
+          {videos.map((video, index) => {
             return (
               <VideoItem
                 key={index}
@@ -47,8 +64,24 @@ export const Videos = ({videoLibrary}) => {
             );
           })}
         </div>
-        
+        <div className="px-4">
+        <Button
+         style={{
+          width: '100%',
+          height: '120px'
+        }}
+         className="px-4"
+         onClick={videoDialog}
+        >
+          <CirclePlus />
+        </Button>
+        </div>
       </ScrollArea>
+      <VideoDialog 
+        open={open} 
+        onOpenChange={setOpen}
+        onSelectVideo={handleSelectVideo}
+      />
     </div>
   );
 };
@@ -66,8 +99,8 @@ const VideoItem = ({
     () => ({
       backgroundImage: `url(${video.preview})`,
       backgroundSize: "cover",
-      width: "80px",
-      height: "80px",
+      width: "100%",
+      height: "120px",
     }),
     [video.preview],
   );
@@ -95,12 +128,12 @@ const VideoItem = ({
             },
           } as any)
         }
-        className="flex w-full items-center justify-center overflow-hidden bg-background pb-2"
+        className="flex w-full h-[120px] items-center justify-center overflow-hidden bg-background pb-2"
       >
         <img
           draggable={false}
           src={video.preview}
-          className="h-full w-full rounded-md object-cover"
+          className="h-auto w-full rounded-md object-cover"
           alt="image"
         />
       </div>

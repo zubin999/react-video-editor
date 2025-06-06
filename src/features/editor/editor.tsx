@@ -71,9 +71,9 @@ const Editor = () => {
 		// setCompactFonts(getCompactFontData(FONTS));
 		// setFonts(FONTS);
 		setSessionid(sessionid);
-		setPlatform(Number(platform));
+		setPlatform(VIDEO_PLATFORM);
 		window.sessionStorage.setItem('sessionid', sessionid)
-		window.sessionStorage.setItem('platform', platform.toString())
+		window.sessionStorage.setItem('platform', VIDEO_PLATFORM)
 	}, [sessionid, platform]);
 
 	useEffect(() => {
