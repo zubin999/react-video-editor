@@ -4,11 +4,11 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import useDataState from "../../store/use-data-state";
+// import { ScrollArea } from "@/components/ui/scroll-area";
+// import useDataState from "../../store/use-data-state";
 import { dispatch } from "@designcombo/events";
 import { EDIT_OBJECT } from "@designcombo/state";
-import { ChevronDown, Search, Strikethrough, Underline, X } from "lucide-react";
+import { ChevronDown, Strikethrough, Underline, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import Opacity from "./opacity";
 import { Input } from "@/components/ui/input";

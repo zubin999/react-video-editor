@@ -5,7 +5,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import Draggable from "react-draggable";
 import useLayoutStore from "../../store/use-layout-store";
 import useClickOutside from "../../hooks/useClickOutside";
-import { ICompactFont, IFont } from "../../interfaces/editor";
+import { ICompactFont } from "../../interfaces/editor";
 import { loadFonts } from "../../utils/fonts";
 import { dispatch } from "@designcombo/events";
 import { EDIT_OBJECT } from "@designcombo/state";

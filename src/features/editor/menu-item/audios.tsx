@@ -8,11 +8,11 @@ import { Music } from "lucide-react";
 import { useIsDraggingOverTimeline } from "../hooks/is-dragging-over-timeline";
 import React from "react";
 import { generateId } from "@designcombo/timeline";
-import useAudioLibrary from "../hooks/use-audio-library";
+// import useAudioLibrary from "../hooks/use-audio-library";
 
 export const Audios = () => {
   const isDraggingOverTimeline = useIsDraggingOverTimeline();
-  const { loading, hasMore, loadNextPage } = useAudioLibrary();
+  // const { loading, hasMore, loadNextPage } = useAudioLibrary();
 
   const handleAddAudio = (payload: Partial<IAudio>) => {
     payload.id = generateId();
@@ -27,7 +27,7 @@ export const Audios = () => {
       <div className="text-text-primary flex h-12 flex-none items-center px-4 text-sm font-medium">
         Audios
       </div>
-      <ScrollArea onScrollEnd={loadNextPage}>
+      <ScrollArea>
         <div className="flex flex-col px-2">
           {AUDIOS.map((audio, index) => {
             return (
@@ -40,16 +40,7 @@ export const Audios = () => {
             );
           })}
         </div>
-        {loading && (
-          <div className="flex justify-center py-4">
-            <span className="text-sm text-muted-foreground">加载中...</span>
-          </div>
-        )}
-        {!hasMore && AUDIOS.length > 0 && (
-          <div className="flex justify-center py-4">
-            <span className="text-sm text-muted-foreground">没有更多音频了</span>
-          </div>
-        )}
+        
       </ScrollArea>
     </div>
   );

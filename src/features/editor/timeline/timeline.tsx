@@ -4,7 +4,7 @@ import Ruler from "./ruler";
 import { timeMsToUnits, unitsToTimeMs } from "@designcombo/timeline";
 import CanvasTimeline from "./items/timeline";
 import * as ScrollArea from "@radix-ui/react-scroll-area";
-import { dispatch, filter, subject } from "@designcombo/events";
+import {  filter, subject } from "@designcombo/events";
 import {
   TIMELINE_BOUNDING_CHANGED,
   TIMELINE_PREFIX,
@@ -13,12 +13,12 @@ import useStore from "../store/use-store";
 import Playhead from "./playhead";
 import { useCurrentPlayerFrame } from "../hooks/use-current-frame";
 import { Audio, Image, Text, Video, Caption, Helper, Track } from "./items";
-import StateManager, { REPLACE_MEDIA } from "@designcombo/state";
+import StateManager from "@designcombo/state";
 import {
   TIMELINE_OFFSET_CANVAS_LEFT,
   TIMELINE_OFFSET_CANVAS_RIGHT,
 } from "../constants/constants";
-import { ITrackItem } from "@designcombo/types";
+// import { ITrackItem } from "@designcombo/types";
 import PreviewTrackItem from "./items/preview-drag-item";
 
 CanvasTimeline.registerItems({
@@ -250,17 +250,17 @@ const Timeline = ({ stateManager }: { stateManager: StateManager }) => {
     };
   }, []);
 
-  const handleReplaceItem = (trackItem: Partial<ITrackItem>) => {
-    dispatch(REPLACE_MEDIA, {
-      payload: {
-        [trackItem.id!]: {
-          details: {
-            src: "https://cdn.designcombo.dev/videos/demo-video-4.mp4",
-          },
-        },
-      },
-    });
-  };
+  // const handleReplaceItem = (trackItem: Partial<ITrackItem>) => {
+  //   dispatch(REPLACE_MEDIA, {
+  //     payload: {
+  //       [trackItem.id!]: {
+  //         details: {
+  //           src: "https://cdn.designcombo.dev/videos/demo-video-4.mp4",
+  //         },
+  //       },
+  //     },
+  //   });
+  // };
 
   const onClickRuler = (units: number) => {
     const canvas = canvasRef.current;

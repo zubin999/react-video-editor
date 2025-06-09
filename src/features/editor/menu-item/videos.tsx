@@ -29,7 +29,7 @@ export const Videos = () => {
   }, [])
 
 
-  const handleAddVideo = (payload) => {
+  const handleAddVideo = (payload: any) => {
     console.log({payload});
     dispatch(ADD_VIDEO, {
       payload,
@@ -47,7 +47,7 @@ export const Videos = () => {
     }
   };
 
-  const handleSelectVideo = (video) => {
+  const handleSelectVideo = (video: Partial<IVideo>) => {
     console.log({video});
     // Use the context's addVideo function
     // addVideo(video);

@@ -27,6 +27,7 @@ import { dispatch } from "@designcombo/events";
 import { generateId } from "@designcombo/timeline";
 import { useSearchParams } from "react-router-dom";
 import { videoService } from "./data/video-service";
+import { IVideo } from "@designcombo/types";
 // import { IVideo } from "@designcombo/types";
 // import { VIDEOS } from "./data/video";
 // 在您的editor.tsx文件中添加以下代码
@@ -65,7 +66,7 @@ const Editor = () => {
 	const sessionid = searchParams.get('sessionid');
 	const platform = searchParams.get('platform');
 	const vid = Number(searchParams.get('vid'));
-	let VIDEO_PLATFORM, AUDIO_PLATFORM;
+	let VIDEO_PLATFORM = 0;
 
 	if (!sessionid || !platform) {
 		return null;
@@ -73,16 +74,16 @@ const Editor = () => {
 
 	if (platform === '1') {
 		VIDEO_PLATFORM = 16;
-		AUDIO_PLATFORM = 20;
+		// AUDIO_PLATFORM = 20;
 	}else if(platform == '2') {
 		VIDEO_PLATFORM = 8;
-		AUDIO_PLATFORM = 8;
+		// AUDIO_PLATFORM = 8;
 	}
 
 
 	const timelinePanelRef = useRef < ImperativePanelHandle > (null);
 	const { timeline, playerRef } = useStore();
-	const [videos, setVideos] = useState([])
+	const [, setVideos] = useState<Partial<IVideo>[]>([])
 
 	useTimelineEvents();
 
@@ -96,9 +97,9 @@ const Editor = () => {
 		// setCompactFonts(getCompactFontData(FONTS));
 		// setFonts(FONTS);
 		setSessionid(sessionid);
-		setPlatform(VIDEO_PLATFORM);
+		setPlatform(Number(VIDEO_PLATFORM));
 		window.sessionStorage.setItem('sessionid', sessionid)
-		window.sessionStorage.setItem('platform', VIDEO_PLATFORM)
+		window.sessionStorage.setItem('platform', String(VIDEO_PLATFORM))
 	}, [sessionid, platform]);
 
 	useEffect(() => {

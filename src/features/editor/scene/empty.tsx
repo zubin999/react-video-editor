@@ -1,7 +1,7 @@
 import useStore from "../store/use-store";
 import { useEffect, useRef, useState } from "react";
 import { Droppable } from "@/components/ui/droppable";
-import { PlusIcon } from "lucide-react";
+// import { PlusIcon } from "lucide-react";
 import { DroppableArea } from "./droppable";
 
 const SceneEmpty = () => {

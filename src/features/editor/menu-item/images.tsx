@@ -7,11 +7,11 @@ import { IImage } from "@designcombo/types";
 import React from "react";
 import { useIsDraggingOverTimeline } from "../hooks/is-dragging-over-timeline";
 import { ADD_ITEMS } from "@designcombo/state";
-import useImageLibrary from "../hooks/use-image-library";
+// import useImageLibrary from "../hooks/use-image-library";
 
 export const Images = () => {
   const isDraggingOverTimeline = useIsDraggingOverTimeline();
-  const { loading, hasMore, loadNextPage } = useImageLibrary();
+  // const { loading, hasMore, loadNextPage } = useImageLibrary();
 
   const handleAddImage = (payload: Partial<IImage>) => {
     const id = generateId();
@@ -40,7 +40,7 @@ export const Images = () => {
       <div className="text-text-primary flex h-12 flex-none items-center px-4 text-sm font-medium">
         Photos
       </div>
-      <ScrollArea onScrollEnd={loadNextPage}>
+      <ScrollArea>
         <div className="masonry-sm px-4">
           {IMAGES.map((image, index) => {
             return (
@@ -53,16 +53,7 @@ export const Images = () => {
             );
           })}
         </div>
-        {loading && (
-          <div className="flex justify-center py-4">
-            <span className="text-sm text-muted-foreground">加载中...</span>
-          </div>
-        )}
-        {!hasMore && IMAGES.length > 0 && (
-          <div className="flex justify-center py-4">
-            <span className="text-sm text-muted-foreground">没有更多图片了</span>
-          </div>
-        )}
+        
       </ScrollArea>
     </div>
   );

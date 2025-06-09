@@ -1,28 +1,28 @@
-import { useCallback, useEffect, useState } from "react";
+// import { useCallback, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { dispatch } from "@designcombo/events";
-import { HISTORY_UNDO, HISTORY_REDO, DESIGN_RESIZE } from "@designcombo/state";
+import { HISTORY_UNDO, HISTORY_REDO } from "@designcombo/state";
 import { Icons } from "@/components/shared/icons";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { ChevronDown, Download, MenuIcon, ShareIcon } from "lucide-react";
-import { Label } from "@/components/ui/label";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+// import {
+//   Popover,
+//   PopoverContent,
+//   PopoverTrigger,
+// } from "@/components/ui/popover";
+import {  Download } from "lucide-react";
+// import { Label } from "@/components/ui/label";
+// import {
+//   DropdownMenu,
+//   DropdownMenuContent,
+//   DropdownMenuItem,
+//   DropdownMenuTrigger,
+// } from "@/components/ui/dropdown-menu";
 import type StateManager from "@designcombo/state";
 import { generateId } from "@designcombo/timeline";
 import { IDesign } from "@designcombo/types";
 import { useDownloadState } from "./store/use-download-state";
-import DownloadProgressModal from "./download-progress-modal";
+// import DownloadProgressModal from "./download-progress-modal";
 import AutosizeInput from "@/components/ui/autosize-input";
-import { debounce } from "lodash";
+// import { debounce } from "lodash";
 import useDataState from "./store/use-data-state";
 
 export default function Navbar({
@@ -120,105 +120,105 @@ const DownloadPopover = ({ stateManager }: { stateManager: StateManager }) => {
   );
 };
 
-interface ResizeOptionProps {
-  label: string;
-  icon: string;
-  value: ResizeValue;
-  description: string;
-}
+// interface ResizeOptionProps {
+//   label: string;
+//   icon: string;
+//   value: ResizeValue;
+//   description: string;
+// }
 
-interface ResizeValue {
-  width: number;
-  height: number;
-  name: string;
-}
+// interface ResizeValue {
+//   width: number;
+//   height: number;
+//   name: string;
+// }
 
-const RESIZE_OPTIONS: ResizeOptionProps[] = [
-  {
-    label: "16:9",
-    icon: "landscape",
-    description: "YouTube ads",
-    value: {
-      width: 1920,
-      height: 1080,
-      name: "16:9",
-    },
-  },
-  {
-    label: "9:16",
-    icon: "portrait",
-    description: "TikTok, YouTube Shorts",
-    value: {
-      width: 1080,
-      height: 1920,
-      name: "9:16",
-    },
-  },
-  {
-    label: "1:1",
-    icon: "square",
-    description: "Instagram, Facebook posts",
-    value: {
-      width: 1080,
-      height: 1080,
-      name: "1:1",
-    },
-  },
-];
+// const RESIZE_OPTIONS: ResizeOptionProps[] = [
+//   {
+//     label: "16:9",
+//     icon: "landscape",
+//     description: "YouTube ads",
+//     value: {
+//       width: 1920,
+//       height: 1080,
+//       name: "16:9",
+//     },
+//   },
+//   {
+//     label: "9:16",
+//     icon: "portrait",
+//     description: "TikTok, YouTube Shorts",
+//     value: {
+//       width: 1080,
+//       height: 1920,
+//       name: "9:16",
+//     },
+//   },
+//   {
+//     label: "1:1",
+//     icon: "square",
+//     description: "Instagram, Facebook posts",
+//     value: {
+//       width: 1080,
+//       height: 1080,
+//       name: "1:1",
+//     },
+//   },
+// ];
 
-const ResizeVideo = () => {
-  const handleResize = (options: ResizeValue) => {
-    dispatch(DESIGN_RESIZE, {
-      payload: {
-        ...options,
-      },
-    });
-  };
-  return (
-    <Popover>
-      <PopoverTrigger asChild>
-        <Button className="border border-border" variant="secondary">
-          Resize
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent className="z-[250] w-60 px-2.5 py-3">
-        <div className="text-sm">
-          {RESIZE_OPTIONS.map((option, index) => (
-            <ResizeOption
-              key={index}
-              label={option.label}
-              icon={option.icon}
-              value={option.value}
-              handleResize={handleResize}
-              description={option.description}
-            />
-          ))}
-        </div>
-      </PopoverContent>
-    </Popover>
-  );
-};
+// const ResizeVideo = () => {
+//   const handleResize = (options: ResizeValue) => {
+//     dispatch(DESIGN_RESIZE, {
+//       payload: {
+//         ...options,
+//       },
+//     });
+//   };
+//   return (
+//     <Popover>
+//       <PopoverTrigger asChild>
+//         <Button className="border border-border" variant="secondary">
+//           Resize
+//         </Button>
+//       </PopoverTrigger>
+//       <PopoverContent className="z-[250] w-60 px-2.5 py-3">
+//         <div className="text-sm">
+//           {RESIZE_OPTIONS.map((option, index) => (
+//             <ResizeOption
+//               key={index}
+//               label={option.label}
+//               icon={option.icon}
+//               value={option.value}
+//               handleResize={handleResize}
+//               description={option.description}
+//             />
+//           ))}
+//         </div>
+//       </PopoverContent>
+//     </Popover>
+//   );
+// };
 
-const ResizeOption = ({
-  label,
-  icon,
-  value,
-  description,
-  handleResize,
-}: ResizeOptionProps & { handleResize: (payload: ResizeValue) => void }) => {
-  const Icon = Icons[icon as "text"];
-  return (
-    <div
-      onClick={() => handleResize(value)}
-      className="flex cursor-pointer items-center rounded-md p-2 hover:bg-zinc-50/10"
-    >
-      <div className="w-8 text-muted-foreground">
-        <Icon size={20} />
-      </div>
-      <div>
-        <div>{label}</div>
-        <div className="text-xs text-muted-foreground">{description}</div>
-      </div>
-    </div>
-  );
-};
+// const ResizeOption = ({
+//   label,
+//   icon,
+//   value,
+//   description,
+//   handleResize,
+// }: ResizeOptionProps & { handleResize: (payload: ResizeValue) => void }) => {
+//   const Icon = Icons[icon as "text"];
+//   return (
+//     <div
+//       onClick={() => handleResize(value)}
+//       className="flex cursor-pointer items-center rounded-md p-2 hover:bg-zinc-50/10"
+//     >
+//       <div className="w-8 text-muted-foreground">
+//         <Icon size={20} />
+//       </div>
+//       <div>
+//         <div>{label}</div>
+//         <div className="text-xs text-muted-foreground">{description}</div>
+//       </div>
+//     </div>
+//   );
+// };

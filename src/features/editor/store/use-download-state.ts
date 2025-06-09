@@ -112,7 +112,8 @@ export const useDownloadState = create<DownloadState>((set, get) => ({
         try {
           await httpReq(new URLSearchParams(saveParams), `appapi/video-lib/save`)
         } catch (error) {
-          throw new Error(error)
+          console.log("save err: ", {error})
+          throw new Error("save error")
         }
         
         toast({
