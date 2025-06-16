@@ -65,9 +65,9 @@ const VideoDialog: React.FC<VideoDialogProps> = ({
       if (data && Array.isArray(data)) {
         setMenuItems(data);
         // Set the first menu item as active by default
-        // if (data.length > 0 && !activeCategory) {
-        //   setActiveCategory(data[0].value);
-        // }
+        if (data.length > 0 && !activeCategory) {
+          setActiveCategory(data[0].value);
+        }
       }
     } catch (error) {
       console.error("Failed to fetch menu items:", error);
