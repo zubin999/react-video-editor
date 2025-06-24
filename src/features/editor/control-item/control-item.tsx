@@ -61,7 +61,7 @@ const ActiveControlItem = ({
     return (
       <div className="mb-32 flex flex-1 flex-col items-center justify-center gap-4 text-muted-foreground">
         <LassoSelect />
-        <span className="text-zinc-500">No item selected</span>
+        <span className="text-zinc-500">未选择元素</span>
       </div>
     );
   }

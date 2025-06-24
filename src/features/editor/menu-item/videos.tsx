@@ -57,7 +57,7 @@ export const Videos = () => {
   return (
     <div className="flex flex-1 flex-col" style={{ height: "100%" }}>
       <div className="text-text-primary flex h-12 flex-none items-center px-4 text-sm font-medium">
-        Videos
+        视频
       </div>
       <ScrollArea>
         <div className="masonry-sm px-4 pb-2 flex flex-col" style={{
@@ -111,7 +111,7 @@ const VideoItem = ({
       backgroundImage: `url(${video.preview})`,
       backgroundSize: "cover",
       width: "100%",
-      height: "120px",
+      height: "auto",
     }),
     [video.preview],
   );
@@ -139,12 +139,12 @@ const VideoItem = ({
             },
           } as any)
         }
-        className="flex w-full h-[120px] items-center justify-center overflow-hidden bg-background pb-2"
+        className="flex w-full h-auto items-center justify-center overflow-hidden bg-background pb-2"
       >
         <img
           draggable={false}
           src={video.preview}
-          className="h-auto w-full rounded-md object-cover"
+          className="h-auto w-full rounded-md object-cover aspect-16/9"
           alt="image"
         />
       </div>

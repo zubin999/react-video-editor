@@ -51,9 +51,7 @@ export default function Navbar({
     >
 
       <div className="flex items-center gap-2">
-        <div className="pointer-events-auto flex h-12 w-12 items-center justify-center rounded-md text-zinc-200">
-
-        </div>
+        
         <div className="bg-sidebar pointer-events-auto flex h-12 items-center px-1.5">
           <Button
             onClick={handleUndo}
@@ -115,7 +113,7 @@ const DownloadPopover = ({ stateManager }: { stateManager: StateManager }) => {
       variant="outline"
       onClick={handleExport}
     >
-      <Download width={18} /> Export
+      <Download width={18} /> 导出
     </Button>
   );
 };
